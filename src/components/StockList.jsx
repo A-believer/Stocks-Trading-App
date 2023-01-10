@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const StockList = () => {
     const [stocks, setStocks] = useState([])
     // const [watchList, setWatchList] = useState(['GOOGL', 'MSFT', 'AMZN']);
-    const { watchList } = useContext(WatchListContext);
+    const { watchList, deleteStock } = useContext(WatchListContext);
     const navigate = useNavigate()
     
 
@@ -73,17 +73,31 @@ const StockList = () => {
                 </thead>
                 <tbody>
                     {stocks.map((stock) => {
-                        return <tr onClick={() => handleStockSelect(stock.symbol)} style={{cursor: "pointer"}} className="table-row" key={stock.symbol} >
-                            <th scope="row">{stock.symbol}</th>
-                            <td>{ stock.data.c}</td>
-                            <td className={`text-${changeColor(stock.data.d)}`}>{ stock.data.d}{renderIcon(stock.data.d)}</td>
-                            <td className={`text-${changeColor(stock.data.d)}`}>{ stock.data.dp}{renderIcon(stock.data.d)}</td>
-                            <td>{ stock.data.h}</td>
-                            <td>{ stock.data.l}</td>
-                            <td>{ stock.data.o}</td>
-                            <td>{ stock.data.pc}</td>
-                        </tr>
-                    })}
+                        return (
+                         <tr onClick={() => handleStockSelect(stock.symbol)} style={{ cursor: "pointer" }} className="table-row" key={stock.symbol} >
+                                <th scope="row">{stock.symbol}</th>
+                                <td>{ stock.data.c}</td>
+                                <td className={`text-${changeColor(stock.data.d)}`}>{ stock.data.d}{renderIcon(stock.data.d)}</td>
+                                <td className={`text-${changeColor(stock.data.d)}`}>{ stock.data.dp}{renderIcon(stock.data.d)}</td>
+                                <td>{stock.data.h}
+                                </td>
+                                <td>{ stock.data.l}</td>
+                                <td>{ stock.data.o}</td>
+                                <td>{ stock.data.pc}
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        deleteStock(stock.symbol)
+                                    }}
+                                        style={{ marginLeft: "20px" }}
+                                        className="btn btn-danger btn-sm ml-3 d-inline-block delete-button">
+                                    Remove
+                                    </button></td>
+                            </tr>
+                        )
+                    })}   
+                        
+                        
                 </tbody>
             </table>
         </div>
